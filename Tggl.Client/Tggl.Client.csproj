@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Tggl.Client</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Nicolas Keller</Authors>
+    <Description>Tggl .NET SDK</Description>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <PackageTags>featureflags feature flags sdk tggl</PackageTags>
+    <RepositoryUrl>https://github.com/your-repo-url</RepositoryUrl>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Readme>README.md</Readme>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Hashing" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
