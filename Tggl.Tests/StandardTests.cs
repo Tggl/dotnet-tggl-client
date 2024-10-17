@@ -1,4 +1,4 @@
-namespace Tggl.Client.Tests;
+namespace Tggl.Tests;
 
 using System.Text.Json;
 using Xunit;

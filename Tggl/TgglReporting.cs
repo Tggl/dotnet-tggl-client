@@ -1,4 +1,4 @@
-namespace Tggl.Client;
+namespace Tggl;
 
 using System.Threading;
 using System.Text.Json;

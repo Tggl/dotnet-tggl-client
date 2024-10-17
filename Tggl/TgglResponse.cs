@@ -1,4 +1,4 @@
-namespace Tggl.Client;
+namespace Tggl;
 
 public class TgglResponse
 {

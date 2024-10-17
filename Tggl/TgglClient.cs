@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
 
-namespace Tggl.Client;
+namespace Tggl;
 
 using System.Net.Http;
 using System.Net.Http.Headers;
