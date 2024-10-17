@@ -104,7 +104,7 @@ public class Flag
         public bool? Negate { get; set; }
         public double? RangeStart { get; set; }
         public double? RangeEnd { get; set; }
-        public int? Seed { get; set; }
+        public long? Seed { get; set; }
         public string[]? Values { get; set; }
         public object? Value { get; set; }
         public int[]? Version { get; set; }
@@ -196,7 +196,11 @@ public class TgglLocalClient
             throw new Exception($"Invalid response from Tggl API ({response.StatusCode}): {errorBody?.GetValueOrDefault("error", "")}");
         }
 
-        var result = response.Content.ReadFromJsonAsync<List<Flag>>().Result;
+        var result = response.Content.ReadFromJsonAsync<List<Flag>>(new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            Converters = { new Flag.OperatorEnumConverter() },
+        }).Result;
 
         if (result is null)
         {
@@ -535,7 +539,8 @@ public class TgglLocalClient
                 return false;
             }
 
-            double probability = (double) XxHash32.HashToUInt32(Encoding.UTF8.GetBytes(value.ToString() ?? ""), rule.Seed ?? 0) / 0xffffffff;
+            double probability = (double) XxHash32.HashToUInt32(Encoding.UTF8.GetBytes(value.ToString() ?? ""),
+                (int) rule.Seed) / 0xffffffff;
             
             if (probability == 1)
             {
@@ -578,16 +583,18 @@ public class TgglLocalClient
         {
             if (EvalRules(context, condition.Rules))
             {
-                return condition.Variation.Active ? condition.Variation : new Flag.Variation
+                return new Flag.Variation
                 {
-                    Active = false
+                    Active = condition.Variation.Active,
+                    Value = condition.Variation.Active ? ConvertToPrimitive(condition.Variation.Value) : null,
                 };
             }
         }
 
-        return flag.DefaultVariation.Active ? flag.DefaultVariation : new Flag.Variation
+        return new Flag.Variation
         {
-            Active = false
+            Active = flag.DefaultVariation.Active,
+            Value = flag.DefaultVariation.Active ? ConvertToPrimitive(flag.DefaultVariation.Value) : null,
         };
     }
 
